@@ -29,6 +29,10 @@ let mensajeCheck = document.getElementById("mensajeCheck");
 let mensajeEdad1 = document.getElementById("mensajeEdad1");
 let mensajeEdad2 = document.getElementById("mensajeEdad2");
 let mensajeResultado = document.getElementById("resultado1");
+let botonEnviarMensaje = document.getElementById("Enviar");
+let inputNombreMensaje = document.getElementById("nombre");
+let inputEmailMensaje = document.getElementById("email");
+let inputMensaje = document.getElementById("mensaje");
 
 // CARGA DE DATOS VALOR DE ACCIÓN LIONKING.SA
 function cargarDatosAccion() {
@@ -254,5 +258,29 @@ formulario.addEventListener("submit", function (evt) {
     mostrarResultado();
 });
 
+botonEnviarMensaje.onclick = function() {enviarMensaje()};
+
+function enviarMensaje() {
+    //Validar campos
+    try {
+        if (inputNombreMensaje.value === '') {
+            agregarError(inputNombreMensaje);
+            throw new Error ('Campo Nombre es requerido')
+        } else {
+            quitarError(inputNombreMensaje);
+        }
+      }
+    catch(Error) {
+        console.log(Error)
+      }
+        
+Swal.fire({
+    title: 'Mensaje Enviado!',
+    text: 'Nos comunicaremos contigo proximamente.',
+    icon: 'success',
+    confirmButtonText: 'Entendido',
+    confirmButtonColor: '#0d6efd'
+  })
+}
 
 
