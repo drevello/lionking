@@ -244,7 +244,7 @@ function rentaResultante() {
 function mostrarResultado() {
     document.getElementById("resultado").style.display = "none";
     if (rentaCalculada >= 0 && validarFormulario) {
-        mensajeResultado.innerHTML = "Estimado/a " + nombre + " " + apellidos + " la renta " + periodicidad.toLowerCase() + " resultante es de $" + rentaCalculada;
+        mensajeResultado.innerHTML = "Estimado/a " + nombre + " " + apellidos + "," + " la renta " + periodicidad.toLowerCase() + " resultante es de $" + rentaCalculada;
         document.getElementById("resultado").style.display = "flex";
     }
 }
