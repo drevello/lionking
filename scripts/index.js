@@ -99,7 +99,7 @@ function borrarMensaje(e) {
 
 function validarFormulario() {
     let fechaNacimientoJs = Date.parse(document.getElementById("inputNacimiento").value);
-    let edadActual = Math.floor((new Date() - fechaNacimientoJs) / 31536000000);
+    edadActual = Math.floor((new Date() - fechaNacimientoJs) / 31536000000);
     documento = inputDocumento.value;
     domicilio = inputDomicilio.value;
     departamento = inputDepartamento.options[inputDepartamento.selectedIndex].text;
@@ -194,15 +194,15 @@ function cicloCapitalizacion() {
     let contador = 1
     while (contador <= periodoCapitalizacion) {
         RentabilidadesAnuales.push(capitalFinal * 0.09);
-        capitalFinal = capitalFinal + (capitalFinal * 0.09);
+        capitalFinal = parseFloat(capitalFinal) + parseFloat(capitalFinal * 0.09);
         contador++;
+        console.log(capitalFinal)
     }
 }
 
 let rentaAnual;
 
 function calculoRentaAnual() {
-    capitalFinal = capitalInicial
     const rentaAnualSinComision = (capitalFinal / (85 - edadRetiro));
     rentaAnual = (rentaAnualSinComision - (rentaAnualSinComision * 0.02)).toFixed(2);
 }
