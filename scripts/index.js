@@ -36,9 +36,9 @@ let inputMensaje = document.getElementById("mensaje");
 
 // CARGA DE DATOS VALOR DE ACCIÓN LIONKING.SA
 function cargarDatosAccion() {
-fetch("https://bevsa.free.beeceptor.com/companias/C01")
-.then((response) => response.json())
-.then((json) => console.log(json));
+    fetch("https://lionking.free.beeceptor.com/companias/C01")
+        .then((response) => response.json())
+        .then((json) => console.log(json));
 }
 
 cargarDatosAccion()
@@ -52,32 +52,32 @@ function preCargarDatos() {
     if (objetoUsuarioRecuperado) {
         for (const propiedad in objetoUsuarioRecuperado) {
             if (objetoUsuarioRecuperado[propiedad] !== null)
-            switch (propiedad) {
-                case 'nombre':
-                    inputNombre.value = objetoUsuarioRecuperado[propiedad];
-                    break;
-                case 'apellidos':
-                    inputApellidos.value = objetoUsuarioRecuperado[propiedad];
-                    break;
-                case 'documento':
-                    inputDocumento.value = objetoUsuarioRecuperado[propiedad];
-                    break;
-                case 'fechaNacimiento':
-                    inputNacimiento.value = objetoUsuarioRecuperado[propiedad];
-                    break;
-                case 'domicilio':
-                    inputDomicilio.value = objetoUsuarioRecuperado[propiedad];
-                    break;
-                case 'departamento':
-                    inputDepartamento.options[inputDepartamento.selectedIndex].text = objetoUsuarioRecuperado[propiedad];
-                    break;
-                case 'correo':
-                    inputEmail.value = objetoUsuarioRecuperado[propiedad];
-                    break;
-                default:
-                    // no hacer nada
-                    break;
-            }
+                switch (propiedad) {
+                    case 'nombre':
+                        inputNombre.value = objetoUsuarioRecuperado[propiedad];
+                        break;
+                    case 'apellidos':
+                        inputApellidos.value = objetoUsuarioRecuperado[propiedad];
+                        break;
+                    case 'documento':
+                        inputDocumento.value = objetoUsuarioRecuperado[propiedad];
+                        break;
+                    case 'fechaNacimiento':
+                        inputNacimiento.value = objetoUsuarioRecuperado[propiedad];
+                        break;
+                    case 'domicilio':
+                        inputDomicilio.value = objetoUsuarioRecuperado[propiedad];
+                        break;
+                    case 'departamento':
+                        inputDepartamento.options[inputDepartamento.selectedIndex].text = objetoUsuarioRecuperado[propiedad];
+                        break;
+                    case 'correo':
+                        inputEmail.value = objetoUsuarioRecuperado[propiedad];
+                        break;
+                    default:
+                        // no hacer nada
+                        break;
+                }
         }
     }
 }
@@ -243,7 +243,7 @@ function rentaResultante() {
 };
 function mostrarResultado() {
     document.getElementById("resultado").style.display = "none";
-    if (rentaCalculada >=0 && validarFormulario) {
+    if (rentaCalculada >= 0 && validarFormulario) {
         mensajeResultado.innerHTML = "Estimado/a " + nombre + " " + apellidos + " la renta " + periodicidad.toLowerCase() + " resultante es de $" + rentaCalculada;
         document.getElementById("resultado").style.display = "flex";
     }
@@ -258,29 +258,47 @@ formulario.addEventListener("submit", function (evt) {
     mostrarResultado();
 });
 
-botonEnviarMensaje.onclick = function() {enviarMensaje()};
+botonEnviarMensaje.onclick = function () { enviarMensaje() };
 
 function enviarMensaje() {
     //Validar campos
-    try {
-        if (inputNombreMensaje.value === '') {
-            agregarError(inputNombreMensaje);
-            throw new Error ('Campo Nombre es requerido')
-        } else {
-            quitarError(inputNombreMensaje);
-        }
-      }
-    catch(Error) {
-        console.log(Error)
-      }
-        
-Swal.fire({
-    title: 'Mensaje Enviado!',
-    text: 'Nos comunicaremos contigo proximamente.',
-    icon: 'success',
-    confirmButtonText: 'Entendido',
-    confirmButtonColor: '#0d6efd'
-  })
+    if (inputNombreMensaje.value === '') {
+        agregarError(inputNombreMensaje);
+        return false;
+    } else {
+        quitarError(inputNombreMensaje);
+    }
+    if (inputEmailMensaje.value === '') {
+        agregarError(inputEmailMensaje);
+        return false;
+    } else {
+        quitarError(inputEmailMensaje);
+    }
+    if (inputMensaje.value === '') {
+        agregarError(inputMensaje);
+        return false;
+    } else {
+        quitarError(inputMensaje);
+    }
+    //Enviar POST con datos
+    let datos = {
+        nombre: inputNombreMensaje.value,
+        email: inputEmailMensaje.value,
+        mensaje: inputMensaje.value
+    }
+    fetch('https://lionking.free.beeceptor.com/mensajes', {
+        method: "POST",
+        body: JSON.stringify(datos)
+    })
+        .then(response => response.json())
+        .then(json => console.log(json));
+    Swal.fire({
+        title: 'Mensaje Enviado!',
+        text: 'Nos comunicaremos contigo proximamente.',
+        icon: 'success',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#0d6efd'
+    })
 }
 
 
