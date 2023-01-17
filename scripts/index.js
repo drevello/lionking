@@ -36,9 +36,12 @@ let inputMensaje = document.getElementById("mensaje");
 
 // CARGA DE DATOS VALOR DE ACCIÓN LIONKING.SA
 function cargarDatosAccion() {
-    fetch("https://lionking.free.beeceptor.com/companias/C01")
+    fetch("https://bevsa.free.beeceptor.com/companias/C01")
         .then((response) => response.json())
-        .then((json) => console.log(json));
+        .then((json) => console.log(json))
+        .catch((error) => {
+            console.log(error)
+        })
 }
 
 cargarDatosAccion()
@@ -183,6 +186,8 @@ function validarFormulario() {
     } else {
         mensajeCheck.innerHTML = '';
     }
+
+
 }
 
 // CALCULOS DE RENTA
@@ -252,6 +257,36 @@ function mostrarResultado() {
 formulario.addEventListener("submit", function (evt) {
     evt.preventDefault();
     validarFormulario();
+        //Verificar campos o detener ejecución.
+
+        if (inputNombre.value == "") {
+            return false;
+        }
+    
+        if (inputApellidos.value == "") {
+            return false;
+        }
+    
+        if (!inputNacimiento.value) {
+            return false;
+        }
+    
+        if (isNaN(inputImporte.value) || inputImporte.value <= 0) {
+            return false;
+        }
+    
+        if (inputEdadCobro.value <= edadActual) {
+            return false;
+        }
+    
+        if (inputEdadCobro.value >= 85) {
+            return false;
+        }
+    
+        if (!inputCheck.checked) {
+            console.log("hola")
+            return false;
+        }
     cicloCapitalizacion();
     rentaResultante();
     guardarUsuario();
@@ -260,41 +295,54 @@ formulario.addEventListener("submit", function (evt) {
 
 botonEnviarMensaje.onclick = function () { enviarMensaje() };
 
+
 function enviarMensaje() {
     //Validar campos
     if (inputNombreMensaje.value === '') {
         agregarError(inputNombreMensaje);
-        return false;
     } else {
         quitarError(inputNombreMensaje);
     }
     if (inputEmailMensaje.value === '') {
         agregarError(inputEmailMensaje);
-        return false;
     } else {
         quitarError(inputEmailMensaje);
     }
     if (inputMensaje.value === '') {
         agregarError(inputMensaje);
-        return false;
+
     } else {
         quitarError(inputMensaje);
     }
+
+    if (inputNombreMensaje.value === '') {
+        return false;
+    }
+    if (inputEmailMensaje.value === '') {
+        return false;
+    }
+    if (inputMensaje.value === '') {
+        return false;
+    }
+
     //Enviar POST con datos
     let datos = {
         nombre: inputNombreMensaje.value,
         email: inputEmailMensaje.value,
         mensaje: inputMensaje.value
     }
-    fetch('https://lionking.free.beeceptor.com/mensajes', {
+    fetch('https://bevsa.free.beeceptor.com/mensajes', {
         method: "POST",
         body: JSON.stringify(datos)
     })
         .then(response => response.json())
-        .then(json => console.log(json));
+        .then(json => console.log(json))
+        .catch((error) => {
+            console.log(error)
+        })
     Swal.fire({
-        title: 'Mensaje Enviado!',
-        text: 'Nos comunicaremos contigo proximamente.',
+        title: '¡Mensaje Enviado!',
+        text: 'Nos comunicaremos contigo próximamente.',
         icon: 'success',
         confirmButtonText: 'Entendido',
         confirmButtonColor: '#0d6efd'
